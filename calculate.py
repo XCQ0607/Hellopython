@@ -143,7 +143,7 @@ def demonstrate_number_operations():
     a = 5
     a **= 2  # 等价于 a = a ** 2
     print(f"a **= 2 = {a}")  #返回的是a的2次方
-    #海象赋值运算符
+    #海象赋值运算符, 可以在赋值时同时计算表达式的值并将其赋值给变量
     a = 5
     a := 3
     print(f"a := 3 = {a}")
