@@ -27,7 +27,7 @@ print(r'hello\nrunoob')  # 在字符串前面添加一个 r，表示原始字符
 
 import keyword
 
-print(keyword.kwlist)
+print(keyword.kwlist)   # 输出所有关键字
 
 import math
 
@@ -61,9 +61,9 @@ class B(A):
     pass
 
 
-print(isinstance(A(), A))
+print(isinstance(A(), A))   #意思是A()是A类的实例对象，是True
 print(type(A()) == A)
-print(isinstance(B(), A))
+print(isinstance(B(), A))   #意思是B()是A类的实例对象，是False
 print(type(B()) == A)
 
 print('------------------------------------')
@@ -481,4 +481,18 @@ print(oct(100))  # '0o144'
 '''
 git config --global --unset http.proxy 
 git config --global --unset https.proxy 
+git push origin master
 '''
+
+# 元组 (Tuple)：使用圆括号 ()
+# 例如：(1, 2, 3)
+#
+# 集合 (Set)：使用花括号 {}
+# 例如：{1, 2, 3}
+# 注意：空集合要用 set() 创建，因为 {} 表示空字典
+#
+# 列表 (List)：使用方括号 []
+# 例如：[1, 2, 3]
+#
+# 字典 (Dictionary)：使用花括号 {}，但内部是键值对
+# 例如：{"a": 1, "b": 2, "c": 3}
