@@ -475,12 +475,13 @@ print(oct(8))  # '0o10'
 print(oct(-56))  # '-0o70'
 print(oct(100))  # '0o144'
 
-
-# git config --global http.sslVerify "false"
-
 '''
+ssh -T git@github.com
+git config --global http.sslVerify "false"
 git config --global --unset http.proxy 
 git config --global --unset https.proxy 
+git init
+git add .
 git push origin master
 '''
 
