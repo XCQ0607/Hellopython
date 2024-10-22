@@ -148,6 +148,18 @@ class DataStructuresDemo:
         print(f"\n2. 字典获取方法:")
         print(f"使用get()获取age: {self.student.get('age')}")
         print(f"使用get()获取不存在的键(带默认值): {self.student.get('phone', 'Not found')}")
+        print(f"使用get()获取不存在的键(不带默认值): {self.student.get('phone')}")
+        print(f"使用in运算符检查键是否存在: {'name' in self.student}")
+        print(f"使用in运算符检查不存在的键: {'phone' in self.student}")
+        print(f"使用pop()删除元素: {self.student.pop('name')}")
+        print(f"删除元素后: {self.student}")
+        try:
+            del self.student['age']
+            print(f"使用del删除元素: {self.student}")
+            print(f"使用del删除不存在的键会抛出异常: {self.student.pop('age')}")
+        except KeyError:
+            print("KeyError: 'age' not found")
+
 
         # 字典推导式
         squares_dict = {x: x ** 2 for x in range(1, 6)}
@@ -155,14 +167,14 @@ class DataStructuresDemo:
 
         # 字典视图
         print("\n4. 字典视图:")
-        print(f"键视图: {list(self.student.keys())}")
+        print(f"键视图keys: {list(self.student.keys())}")
         print(f"值视图: {list(self.student.values())}")
         print(f"键值对视图: {list(self.student.items())}")
 
         # 字典合并
         dict1 = {'a': 1, 'b': 2}
         dict2 = {'c': 3, 'd': 4}
-        merged = {**dict1, **dict2}  # Python 3.5+
+        merged = {**dict1, **dict2}  # Python 3.5+，使用**运算符合并字典
         print(f"\n5. 合并字典: {merged}")
 
 
@@ -170,9 +182,9 @@ class DataStructuresDemo:
         """演示高级操作和技巧"""
         print("\n=== 高级操作演示 ===")
 
-        # enumerate使用
+        # enumerate使用   这个函数可以同时获取元素的索引和值
         print("\n1. enumerate使用:")
-        for i, fruit in enumerate(self.fruits, 1):
+        for i, fruit in enumerate(self.fruits, 1):  # 从1开始计数，默认是0(index)
             print(f"水果 {i}: {fruit}")
 
         # zip使用
@@ -196,8 +208,10 @@ class DataStructuresDemo:
         ]
         # 转置矩阵
         transposed = [[row[i] for row in matrix] for i in range(3)]
+        untransposed = list(map(lambda x: list(x), zip(*transposed)))   # 使用map函数和lambda表达式实现转置,map函数作用是将一个函数应用到一个列表的每个元素上，返回一个新的列表。
         print(f"原始矩阵: {matrix}")
         print(f"转置后: {transposed}")
+        print(f"untransposed: {untransposed}")
 
 
 def main():
