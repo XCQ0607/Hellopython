@@ -1,4 +1,4 @@
-import os
+import OSdemo
 import pickle
 import sys
 from datetime import datetime
@@ -125,14 +125,17 @@ def demonstrate_pickle_operations():
     # 2. 序列化到文件
     print("\n1. 序列化数据:")
     with open(filename, 'wb') as f:
-        pickle.dump(test_data, f)
+        pickle.dump(test_data, f)     # dump() 方法用于将对象序列化并写入文件，参数：对象，文件对象
         print("数据已序列化到文件")
-
+#序列化：将对象转换为字节流，以便于存储或传输。
     # 3. 从文件反序列化
     print("\n2. 反序列化数据:")
     with open(filename, 'rb') as f:
-        loaded_data = pickle.load(f)
-        print("反序列化的数据:")
+        print("f.read() 读取原始文件:")
+        print(f.read()) #read()过后指针会在文件末尾，此时使用load()会报错，因为指针已经在文件末尾，无法读取
+        f.seek(0) # 移动到文件的开头
+        loaded_data = pickle.load(f)    # load() 方法用于从文件中反序列化对象，参数：文件对象
+        print("反序列化的数据:")   #反序列化会还原为原来的类型
         for key, value in loaded_data.items():
             print(f"{key}: {value}")
 
@@ -195,17 +198,38 @@ def cleanup():
     for file in files_to_remove:
         if os.path.exists(file):
             os.remove(file)
+#总结函数
+#open():      用于打开文件并返回文件对象。    可带参数: 文件名，打开模式，编码方式     调用示例：     f = open("test.txt", "r")     额外说明:附带with的语句，会自动关闭文件，无需手动关闭文件,示例：  with open("test.txt", "r") as f:     f.read()
+#设置文件内容示例
+'''
+Hello World!
+XCQ！
+'''
+#read():      用于读取文件内容。    可带参数: 读取的字节数     调用示例：     f.read()  输出参考:  Hello World!
+#readline():  用于读取文件的一行内容。    可带参数: 读取的字节数     调用示例：     f.readline()  输出参考:  Hello World!
+#readlines(): 用于读取文件的所有行内容。    可带参数: 读取的字节数     调用示例：     f.readlines()  输出参考:  ['Hello World!\n', 'XCQ！\n']
+#write():     用于向文件写入内容。    可带参数: 写入的内容     调用示例：     f.write("Hello World!")
+#seek():      用于移动文件指针的位置。    可带参数: 偏移量，起始位置     调用示例：     f.seek(0)  输出参考:  Hello World!
+#close():     用于关闭文件。    可带参数: 无     调用示例：     f.close()
+#dummy():      用于创建一个空文件。    可带参数: 文件名     调用示例：     dummy("test.txt")
+#dump():       用于将对象序列化并写入文件。    可带参数: 对象，文件对象     调用示例：     dump(test_data, f)
+#load():       用于从文件中反序列化对象。    可带参数: 文件对象     调用示例：     loaded_data = load(f)
+#tell():       用于返回当前文件指针的位置。    可带参数: 无     调用示例：     f.tell()  输出参考:  0
+#flush():      用于刷新文件缓冲区。    可带参数: 无     调用示例：     f.flush()    作用/使用场景:  当文件写入内容时，会先写入缓冲区，然后再写入文件。如果不调用flush()，缓冲区中的内容不会写入文件。
+#truncate():   用于截断文件。    可带参数: 截断的字节数     调用示例：     f.truncate(5)# 将文件截断为5个字节      truncate作用/使用场景:截断文件，保留前n个字节
 
+
+#打开文件的模式
 
 # 基本模式：
 'r'  # 只读模式（默认模式）。文件必须存在，否则报错
 'w'  # 写入模式。如果文件存在则覆盖，不存在则创建
-'a'  # 追加模式。如果文件存在则在末尾追加，不存在则创建
+'a'  # 追加模式。如果文件存在则在末尾追加，不存在则创建     用seek也不能改变文本追加的位置在文件末尾
 'x'  # 独占创建模式。如果文件已存在则报错，不存在则创建新文件
 # 扩展模式（在基本模式后添加）：
 'b'  # 二进制模式
 't'  # 文本模式（默认）
-'+'  # 读写模式
+'+'  # 读写模式 意思是增加写入的位置在文件末尾，但是如r+时，如果文件不存在，会报错，这个不与w相同
 # 常见组合模式：
 'rb'   # 二进制只读
 'r+'   # 读写模式，从文件开头开始

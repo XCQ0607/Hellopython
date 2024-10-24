@@ -39,7 +39,7 @@ from math import sqrt
 result = sqrt(16)
 print(result)  # 输出 4.0
 
-import os
+import OSdemo
 
 current_directory = os.getcwd()
 print(current_directory)  # 输出当前工作目录
@@ -477,11 +477,11 @@ print(oct(100))  # '0o144'
 
 '''
 ssh -T git@github.com
+git init
+git add .
 git config --global http.sslVerify "false"
 git config --global --unset http.proxy 
 git config --global --unset https.proxy 
-git init
-git add .
 git push origin master
 '''
 
