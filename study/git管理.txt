@@ -1,0 +1,24 @@
+git log: 显示提交历史
+git log --oneline: 每个提交只显示一行
+git log --graph: 以图形方式显示分支和合并历史
+git reflog: 显示本地仓库中引用的历史变动
+这个命令会显示你移动 HEAD 的所有操作，包括提交、重置、检出等
+
+git show: 显示某个提交的详细信息
+例如：git show HEAD 显示最近一次提交的详细信息
+git blame <file>: 显示文件的每一行是谁在哪个提交中修改的
+git log -p <file>: 显示特定文件的修改历史
+git log --author="username": 显示特定作者的提交历史
+git log --since="yyyy-mm-dd" --until="yyyy-mm-dd": 显示特定日期范围内的提交
+git log -S"<string>": 搜索提交历史中包含特定字符串的修改
+
+寻找特定提交
+git log --all --reflog --grep="关键字"
+git log --all --grep="关键字"
+恢复到指定版本
+git reset --hard [hash]
+
+如果你使用了 reset 方法，你的 master 分支现在会直接指向 [hash]。注意，这会丢弃 [hash] 之后的所有提交。
+
+强制推送
+git push --force origin master

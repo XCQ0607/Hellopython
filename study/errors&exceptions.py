@@ -2,6 +2,7 @@ import logging
 import sys
 import traceback
 import time
+import os
 
 # 配置日志
 logging.basicConfig(level=logging.DEBUG)  # 设置日志级别为DEBUG
@@ -83,7 +84,7 @@ def divide(x, y):
     else:
         logging.info(f"除法计算成功: {x} / {y} = {result}")
         return result
-    finally:
+    finally:    # 无论是否发生异常都会执行
         logging.debug("divide函数执行完毕")
 
 
@@ -91,6 +92,7 @@ def read_file(filename):
     """
     读取文件函数,演示文件操作异常处理
     """
+
     try:
         with open(filename, 'r') as f:
             content = f.read()
@@ -98,15 +100,14 @@ def read_file(filename):
         # 文件不存在异常
         logging.error(f"文件 {filename} 不存在!")
         raise
-    except PermissionError:
         # 权限不足异常
         logging.error(f"没有权限读取文件 {filename}!")
         raise
-    except IOError as e:
-        # IO异常
+    except IOError as e:      # 捕获所有IO异常
+        # IO异常,指的是输入输出错误,如文件不存在、磁盘已满、网络连接失败等
         logging.error(f"读取文件 {filename} 时发生IO错误: {str(e)}")
         raise
-    else:
+    else:     # 没有异常时执行
         logging.info(f"成功读取文件 {filename}")
         return content
 
@@ -118,16 +119,18 @@ def complex_operation(x, y, filename):
     try:
         # 调用可能引发异常的函数
         result = divide(x, y)
-        content = read_file(filename)  # 调用可能引发异常的函数
-
+        logging.info(result)
         # 自定义异常
-        if result > 100:
+        if result > 100.0:
             raise CustomError("结果超过100!")
-
+        content = read_file(filename)  # 调用可能引发异常的函数
         # 断言
-        assert len(content) > 0, "文件内容为空!"
+        assert len(content) > 0, "文件内容为空!"  #断言：如果条件为False，则抛出AssertionError异常
+        logging.info("---------------------")
+        logging.info(f"{filename}文件内容: \n{content}")
+        logging.info("---------------------")
 
-    except (ZeroDivisionError, TypeError) as e:
+    except (ZeroDivisionError, TypeError) as e: #as e: 捕获多个异常类型
         logging.error(f"数学运算错误: {str(e)}")
     except (FileNotFoundError, PermissionError, IOError) as e:
         logging.error(f"文件操作错误: {str(e)}")
@@ -148,13 +151,28 @@ def complex_operation(x, y, filename):
 
 if __name__ == "__main__":
     # 测试各种异常情况
-    complex_operation(10, 2, "example.txt")  # 正常情况
+    #设置工作目录为当前文件所在目录
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    #创建testfile.txt在工作目录下
+    with open("test_file.txt", "w") as f:
+        f.write("Hello, world!")
+
+    complex_operation(10, 2, "test_file.txt")  # 正常情况
+    logging.info("-------------------------")
     complex_operation(10, 0, "example.txt")  # 除零错误
+    logging.info("-------------------------")
     complex_operation("10", 2, "example.txt")  # 类型错误
+    logging.info("-------------------------")
     complex_operation(10, 2, "nonexistent.txt")  # 文件不存在
+    logging.info("-------------------------")
     complex_operation(1000, 2, "example.txt")  # 自定义异常
+    logging.info("-------------------------")
+    complex_operation(10000, 2, "example.txt")
+    logging.info("-------------------------")
     complex_operation(10, 2, "empty.txt")  # 断言错误(假设empty.txt为空文件)
 
+    #清除临时文件
+    os.remove("test_file.txt")
     # 捕获键盘中断
     try:
         # 等待5秒
