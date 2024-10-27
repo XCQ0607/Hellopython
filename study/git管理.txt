@@ -22,3 +22,11 @@ git reset --hard [hash]
 
 强制推送
 git push --force origin master
+更新远程仓库最新代码
+git fetch origin
+查看当前分支是否在主分支上，如果不在，切换到主分支
+git checkout master
+将远程仓库的代码合并到本地分支，如果有冲突，解决冲突后再次合并
+git merge origin/master
+如果没有冲突，就可以强制推送本地分支到远程仓库
+git reset --hard origin/main
