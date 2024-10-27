@@ -172,27 +172,35 @@ class NetworkDemo:
     def demonstrate_network_operations(self):
         """演示网络相关操作"""
         logger.info("\n=== 网络操作示例 ===")
-
+        #urlib是一个Python标准库，用于处理URL。
         # GET请求示例
         def make_get_request(url):
             try:
-                with urllib.request.urlopen(url) as response:
+                #urllib.request.urlopen()函数用于打开一个URL，返回一个响应对象
+                with urllib.request.urlopen(url) as response:   #as是关键字，表示with语句的上下文管理器，response表示响应对象
+                    #response.read()表示读取响应内容，response.read().decode('utf-8')表示将响应内容解码为字符串
                     return response.read().decode('utf-8')
             except Exception as e:
                 logger.error(f"请求失败: {e}")
                 return None
+        #with语句：应用在需要打开、处理和关闭资源的场景，with语句会自动处理资源的打开和关闭，避免了手动关闭资源的繁琐操作。
 
         # POST请求示例
         def make_post_request(url, data):
             try:
-                data = urllib.parse.urlencode(data).encode('utf-8')
+                #urllib.parse.urlencode()函数用于将字典转换为URL编码的字符串，data表示要编码的字典
+                data = urllib.parse.urlencode(data).encode('utf-8') #encode('utf-8')表示将字符串编码为UTF-8格式
+                #data结果：b'name=%E5%BC%A0%E4%B8%89&age=25'
+                #urllib.request.Request()函数用于创建一个请求对象，url表示请求的URL，data表示请求的数据，method表示请求的方法，默认为GET
                 req = urllib.request.Request(url, data=data, method='POST')
-                with urllib.request.urlopen(req) as response:
-                    return response.read().decode('utf-8')
+                with urllib.request.urlopen(req) as response:   #urlopen()函数可接受url(get)或请求对象(post)
+                    return response.read().decode('utf-8')  #decode('utf-8')表示将响应内容解码为字符串
             except Exception as e:
                 logger.error(f"请求失败: {e}")
                 return None
-
+        #Get/Post：
+        #Get：获取资源，Post：提交数据
+        #Get：请求参数在URL中，Post：请求参数在请求体中
         # 示例URL（使用httpbin进行测试）
         get_url = "http://httpbin.org/get"    # 示例URL（使用httpbin进行测试）
         post_url = "http://httpbin.org/post"    # 示例URL（使用httpbin进行测试）
@@ -202,7 +210,7 @@ class NetworkDemo:
         logger.info("发送GET请求...")
         get_response = make_get_request(get_url)
         if get_response:
-            logger.info(f"GET响应: {get_response[:200]}...")
+            logger.info(f"GET响应: {get_response[:1000]}")  #[:1000]指的是取前1000个字符
 
         # 发送POST请求
         post_data = {
@@ -212,7 +220,7 @@ class NetworkDemo:
         logger.info("发送POST请求...")
         post_response = make_post_request(post_url, post_data)
         if post_response:
-            logger.info(f"POST响应: {post_response[:200]}...")
+            logger.info(f"POST响应: {post_response}")
 
 
 class MathDemo:
@@ -229,19 +237,44 @@ class MathDemo:
         logger.info(f"2的10次方: {math.pow(2, 10)}")
 
         # 三角函数
-        angle = math.pi / 4  # 45度
+        angle = math.pi / 6  # 30度
         logger.info(f"cos(45°): {math.cos(angle)}")
         logger.info(f"sin(45°): {math.sin(angle)}")
+        # 指数函数
+        logger.info(f"e的2次方: {math.exp(2)}")
 
+        # 对数函数
+        logger.info(f"以e为底的2的对数: {math.log(2)}")
+        logger.info(f"以10为底的100的对数: {math.log10(100)}")
+
+        # 舍入函数
+        logger.info(f"向上取整: {math.ceil(3.14)}")
+        logger.info(f"向下取整: {math.floor(3.14)}")
+        logger.info(f"四舍五入: {round(3.14)}")
+
+        # 绝对值
+        logger.info(f"绝对值: {math.fabs(-5)}")
+
+        #random模块介绍：
+        #random模块是Python标准库中的一个模块，用于生成随机数。
+        #random模块提供了以下功能：
+        #生成随机整数 random.randint(1, 100)
+        #生成随机浮点数    random.random() 范围为0到1
+        #从序列中随机选择一个元素   random.choice(items)
+        #从序列中随机选择多个元素  random.sample(items, 3)
+
+
+        # 随机数种子
+        random.seed(42)    #random.seed()函数用于设置随机数生成器的种子，42表示种子值
         # 随机数生成
         logger.info("\n随机数示例:")
         logger.info(f"随机整数(1-100): {random.randint(1, 100)}")
-        logger.info(f"随机浮点数(0-1): {random.random()}")
+        logger.info(f"随机浮点数(0-1): {random.random():.3f}")   #取前三位浮点数：{random.random():.3f}
 
         # 随机选择
         items = ['苹果', '香蕉', '橘子', '葡萄']
-        logger.info(f"随机选择: {random.choice(items)}")
-        logger.info(f"随机采样(取3个): {random.sample(items, 3)}")
+        logger.info(f"随机选择: {random.choice(items)}")    #random.choice()函数用于从给定的序列中随机选择一个元素，items表示序列
+        logger.info(f"随机采样(取3个): {random.sample(items, 3)}")    #random.sample()函数用于从给定的序列中随机选择指定数量的元素，items表示序列，3表示数量
 
 
 class CompressionDemo:
@@ -253,10 +286,16 @@ class CompressionDemo:
 
         # 字符串压缩
         text = "这是一个需要压缩的很长的字符串" * 100
-        text_bytes = text.encode('utf-8')
+        text_bytes = text.encode('utf-8')   #如果不encode('utf-8')，text类型是str类型，而encode('utf-8')是将str类型转换为bytes类型
+        #bytes类型是字节序列，每个字节都是一个整数，范围是0到255，即0x00到0xFF。转为bytes类型的原因是，Python中的字符串都是以Unicode编码的，Unicode占用2个字节。
+        #Unicode编码，范围是0x0000到0
+        #zlib.compress()函数用于压缩数据，text_bytes表示要压缩的数据需要类型是bytes类型，text类型是str类型，需要encode('utf-8')转换为bytes类型
+        #compressed类型是bytes类型
+        #zlib模块是Python标准库，用于数据压缩和解压缩。
 
         # 压缩
-        compressed = zlib.compress(text_bytes)
+        compressed = zlib.compress(text_bytes)  #zlib.compress()函数用于压缩数据，text_bytes表示要压缩的数据，compressed类型是bytes类型
+        logger.info(f"compressd的类型是：{type(compressed)}")
         logger.info(f"原始大小: {len(text_bytes)} 字节")
         logger.info(f"压缩后大小: {len(compressed)} 字节")
         logger.info(f"压缩率: {(1 - len(compressed) / len(text_bytes)) * 100:.2f}%")
@@ -267,22 +306,45 @@ class CompressionDemo:
         logger.info(f"解压后内容与原始内容相同: {decompressed == text_bytes}")
 
 
-# class TestDemo(unittest.TestCase):
-#     """单元测试示例类"""
-#
-#     def setUp(self):
-#         """测试准备"""
-#         self.math_demo = MathDemo()
-#
-#     def test_math_operations(self):
-#         """测试数学运算"""
-#         self.assertAlmostEqual(math.cos(math.pi / 4), 0.7071067811865476)
-#         self.assertEqual(math.pow(2, 10), 1024)
-#
-#     def test_random_operations(self):
-#         """测试随机数操作"""
-#         random_int = random.randint(1, 100)
-#         self.assertTrue(1 <= random_int <= 100)
+class TestDemo(unittest.TestCase):    #unittest.TestCase是unittest框架中的一个类，用于编写单元测试用例
+    """单元测试示例类"""
+
+    def setUp(self):
+        """测试准备"""
+        self.math_demo = MathDemo()
+
+    def test_math_operations(self):
+        """测试数学运算"""
+        logger.info("\n=== 测试数学运算 ===")
+        logger.info("测试cos(45°)")
+        logger.info(f"cos(45°) = {math.cos(math.pi / 4)}")
+
+        logger.info(f"cos(45°) = 0.7071067811865476 \t{self.assertAlmostEqual(math.cos(math.pi / 4), 0.7071067811865476)}")
+        #返回的是None，因为assertAlmostEqual()函数没有返回值，只有断言失败时才会抛出异常
+        self.assertEqual(math.pow(2, 10), 1024)
+
+    def test_random_operations(self):
+        """测试随机数操作"""
+        random_int = random.randint(1, 100)
+        self.assertTrue(1 <= random_int <= 100)
+
+    #断言判断示例
+    def test_assert_operations(self):
+        """测试断言操作"""
+        with self.assertRaises(ValueError):
+            int("abc")
+        #self.assertRaises()函数用于断言一个函数或方法是否会抛出指定的异常，ValueError表示要断言的异常类型
+        #int("abc")表示将字符串"abc"转换为整数，int()函数会抛出ValueError异常，然后assertRaises()函数会捕获这个异常并断言它的类型是否为ValueError
+        #然后判断确实为ValueError异常，然后断言通过
+        #断言不通过示例 if 1:
+        if 0:
+            int("ABC")
+
+    def tearDown(self):
+        """测试清理"""    #tearDown()函数用于清理测试环境，del self.math_demo表示删除self.math_demo对象
+        #清理测试环境作用是为了保证测试环境的稳定性，防止测试用例之间的干扰
+        del self.math_demo
+
 
 
 def main():
@@ -304,13 +366,16 @@ def main():
         math_demo.demonstrate_math_operations()
         comp_demo.demonstrate_compression()
 
-        运行单元测试
+        # 运行单元测试
         logger.info("\n=== 运行单元测试 ===")
-        unittest.main(argv=['dummy'])
-
+        unittest.main(argv=['dummy'])    #unittest.main()函数用于运行单元测试，argv=['dummy']表示传递一个空的参数列表给unittest.main()函数
+        #这个函数会调用所有继承自unittest.TestCase的类中的test开头的方法，运行这些方法中的测试用例。
+        #这个地方也可以是unittest.main()，里面留空，表示运行所有的测试用例。
     except Exception as e:
         logger.error(f"程序运行出错: {e}")
         sys.exit(1)
+    finally:
+        logger.info("\n=== 程序结束 ===")
 
 
 if __name__ == "__main__":
